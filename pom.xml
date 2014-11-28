@@ -21,8 +21,8 @@
 
     <licenses>
         <license>
-            <name>Apache License</name>
-            <url>http://www.opensource.org/licenses/apache-license.php</url>
+            <name>Apache License, Version 2.0</name>
+            <url>http://opensource.org/licenses/Apache-2.0</url>
         </license>
     </licenses>
 
@@ -31,7 +31,7 @@
             <name>The Alchemist</name>
             <email>kap4020@gmail.com</email>
             <url>http://frightanic.com</url>
-            <timezone>+5</timezone>
+            <timezone>America/New_York</timezone>
             <roles>
                 <role>developer</role>
             </roles>
