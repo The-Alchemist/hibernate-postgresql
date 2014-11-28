@@ -16,7 +16,7 @@
     <inceptionYear>2014</inceptionYear>
 
     <prerequisites>
-        <maven>3.0.3</maven>
+        <maven>3.3.0</maven>
     </prerequisites>
 
     <licenses>
@@ -81,12 +81,12 @@
         <target.version>1.7</target.version>
 
     <!-- plugin versions -->
-        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
         <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
-        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
-        <maven-release-plugin.version>2.5</maven-release-plugin.version>
-        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
+        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+        <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+        <maven-source-plugin.version>2.4</maven-source-plugin.version>
 
     <!-- dependency versions -->
         <bean-validation.version>1.1.0.Final</bean-validation.version>
