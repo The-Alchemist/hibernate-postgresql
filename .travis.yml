@@ -4,3 +4,5 @@ addons:
 before_script:
   - psql -c 'create database pg_hibernate;' -U postgres
   - psql -U postgres -c 'create extension hstore'
+install:
+  mvn verify
