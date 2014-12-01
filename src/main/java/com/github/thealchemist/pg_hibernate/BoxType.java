@@ -6,7 +6,7 @@ import org.hibernate.usertype.UserType;
 import org.postgresql.geometric.PGbox;
 
 import com.github.thealchemist.pg_hibernate.types.Point;
-import com.github.thealchemist.pg_hibernate.types.Rectangle;
+import com.github.thealchemist.pg_hibernate.types.Box;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
@@ -19,7 +19,7 @@ import java.sql.SQLException;
  * @author Jesse Costello-Good
  * @version $Id$
  */
-public class RectangleType implements UserType {
+public class BoxType implements UserType {
 
     @Override
     public int[] sqlTypes() {
@@ -27,8 +27,8 @@ public class RectangleType implements UserType {
     }
 
     @Override
-    public Class<Rectangle> returnedClass() {
-        return Rectangle.class;
+    public Class<Box> returnedClass() {
+        return Box.class;
     }
 
     @Override
@@ -53,14 +53,14 @@ public class RectangleType implements UserType {
         } else {
             Point p1 = new Point(value.point[0].x, value.point[0].y);
             Point p2 = new Point(value.point[1].x, value.point[1].y);
-            return new Rectangle(p1, p2);
+            return new Box(p1, p2);
         }
     }
 
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
 
-        Rectangle rect = (Rectangle) o;
+        Box rect = (Box) o;
 
         if (o == null) {
             preparedStatement.setNull(i, java.sql.Types.OTHER);
@@ -75,7 +75,7 @@ public class RectangleType implements UserType {
         if (o == null)
             return null;
         try {
-            return ((Rectangle) o).clone();
+            return ((Box) o).clone();
         } catch (CloneNotSupportedException e) {
             throw new IllegalArgumentException(e.toString());
         }

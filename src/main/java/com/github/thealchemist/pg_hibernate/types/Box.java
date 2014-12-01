@@ -9,12 +9,12 @@ import java.io.Serializable;
  * @author Jesse Costello-Good
  * @version $Id$
  */
-public class Rectangle implements Serializable, Cloneable {
+public class Box implements Serializable, Cloneable {
 
 	private final Point p1;
 	private final Point p2;
 
-	public Rectangle( Point p1, Point p2 ) {
+	public Box( Point p1, Point p2 ) {
 		this.p1 = p1;
 		this.p2 = p2;
 	}
@@ -32,9 +32,9 @@ public class Rectangle implements Serializable, Cloneable {
 	}
 
 	public boolean equals( Object obj ) {
-		if (obj instanceof Rectangle) {
-			return (p1.equals(((Rectangle) obj).p1) && p2.equals(((Rectangle) obj).p2)) ||
-					(p1.equals(((Rectangle) obj).p2) && p2.equals(((Rectangle) obj).p1));
+		if (obj instanceof Box) {
+			return (p1.equals(((Box) obj).p1) && p2.equals(((Box) obj).p2)) ||
+					(p1.equals(((Box) obj).p2) && p2.equals(((Box) obj).p1));
 		}
 		return super.equals(obj);
 	}

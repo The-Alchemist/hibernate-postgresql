@@ -34,7 +34,7 @@ CREATE TABLE RectangleTypeEntity (
 
 CREATE TABLE PolygonTypeEntity (
 	id serial not null,
-	polygon polygon,
+	my_polygon polygon,
 	primary key (id)
 ) WITHOUT OIDS;
 

@@ -1,9 +1,12 @@
 package com.github.thealchemist.pg_hibernate.spring;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.Type;
 
 import com.github.thealchemist.pg_hibernate.types.Polygon;
 
@@ -13,7 +16,9 @@ public class PolygonTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	private Polygon polygon;
+    @Column(name="my_polygon")
+    @Type(type="polygon")
+	private Polygon myPolygon;
 
 	public Integer getId() {
 		return id;
@@ -24,10 +29,10 @@ public class PolygonTypeEntity {
 	}
 
 	public Polygon getPolygon() {
-		return polygon;
+		return myPolygon;
 	}
 
 	public void setPolygon( Polygon polygon ) {
-		this.polygon = polygon;
+		this.myPolygon = polygon;
 	}
 }

@@ -1,5 +1,6 @@
 package com.github.thealchemist.pg_hibernate.spring;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,8 +16,9 @@ public class CircleTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+    @Column(name="my_circle")
     @Type(type="circle")
-	private Circle circle;
+	private Circle myCircle;
 
 	public Integer getId() {
 		return id;
@@ -27,10 +29,10 @@ public class CircleTypeEntity {
 	}
 
 	public Circle getCircle() {
-		return circle;
+		return myCircle;
 	}
 
 	public void setCircle( Circle circle ) {
-		this.circle = circle;
+		this.myCircle = circle;
 	}
 }

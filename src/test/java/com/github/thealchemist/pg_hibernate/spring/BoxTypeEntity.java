@@ -1,19 +1,24 @@
 package com.github.thealchemist.pg_hibernate.spring;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.github.thealchemist.pg_hibernate.types.Rectangle;
+import org.hibernate.annotations.Type;
+
+import com.github.thealchemist.pg_hibernate.types.Box;
 
 @Entity
-public class RectangleTypeEntity {
+public class BoxTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	private Rectangle rect;
+    @Column(name="my_box")
+    @Type(type="box")
+	private Box myBox;
 
 	public Integer getId() {
 		return id;
@@ -23,11 +28,11 @@ public class RectangleTypeEntity {
 		this.id = id;
 	}
 
-	public Rectangle getRect() {
-		return rect;
+	public Box getBox() {
+		return myBox;
 	}
 
-	public void setRect( Rectangle rect ) {
-		this.rect = rect;
+	public void setBox( Box box ) {
+		this.myBox = box;
 	}
 }

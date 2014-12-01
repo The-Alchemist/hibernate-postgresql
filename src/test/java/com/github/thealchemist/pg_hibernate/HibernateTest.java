@@ -39,7 +39,7 @@ import com.github.thealchemist.pg_hibernate.spring.PersistenceJPAConfig;
 @TransactionConfiguration(defaultRollback=true)
 @Ignore
 @Sql("classpath:/schema.sql")
-public class HibernateTest  {
+public abstract class HibernateTest  {
     /*
      * created by Spring
      */
@@ -56,5 +56,9 @@ public class HibernateTest  {
 
     @PersistenceContext
     protected EntityManager em;
+
+    public abstract void testSet() throws Exception;
+    public abstract void testNull() throws Exception;
+    public abstract void testGet() throws Exception;
 
 }

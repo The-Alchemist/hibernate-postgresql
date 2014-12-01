@@ -1,19 +1,22 @@
 package com.github.thealchemist.pg_hibernate.spring;
 
-import java.net.Inet4Address;
+import java.net.InetAddress;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Type;
+
 @Entity
-public class Inet4AddressEntity {
+public class InetAddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	private Inet4Address address;
+    @Type(type="inet")
+	private InetAddress address;
 
 	public Integer getId() {
 		return id;
@@ -23,11 +26,11 @@ public class Inet4AddressEntity {
 		this.id = id;
 	}
 
-	public Inet4Address getAddress() {
+	public InetAddress getAddress() {
 		return address;
 	}
 
-	public void setAddress( Inet4Address address ) {
+	public void setAddress( InetAddress address ) {
 		this.address = address;
 	}
 }

@@ -1,12 +1,15 @@
 package com.github.thealchemist.pg_hibernate;
 
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 import java.awt.geom.Point2D;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.github.thealchemist.pg_hibernate.spring.PointTypeEntity;
@@ -22,7 +25,8 @@ public class PointTypeTest extends HibernateTest {
 	private static final double Y = Math.PI;
 	private static final double EPSILON = .00000001;
 
-	@Test
+	@Override
+    @Test
 	public void testSet() throws Exception {
 		Point point = new Point(X, Y);
 		PointTypeEntity entity = new PointTypeEntity();
@@ -45,6 +49,17 @@ public class PointTypeTest extends HibernateTest {
 	}
 
 	@Test
+	@Sql
+    public void testGet() throws Exception {
+	    PointTypeEntity fromDb = this.em.find(PointTypeEntity.class, 101);
+
+        assertNotNull(fromDb);
+        assertThat(fromDb.getPoint().getX(), is(equalTo(38.0)));
+        assertThat(fromDb.getPoint().getY(),  is(equalTo(39.0)));
+
+	}
+	@Override
+    @Test
 	public void testNull() throws Exception {
 		PointTypeEntity entity = new PointTypeEntity();
 

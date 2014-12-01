@@ -5,12 +5,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 public class StringArrayEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+    @Type(type="stringarray")
 	private String[] strings;
 
 	public Integer getId() {

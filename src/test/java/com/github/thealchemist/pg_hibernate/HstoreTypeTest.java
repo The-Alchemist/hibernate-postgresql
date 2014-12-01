@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.github.thealchemist.pg_hibernate.spring.HstoreTypeEntity;
@@ -19,8 +20,8 @@ import com.google.common.collect.ImmutableMap;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class HstoreTypeTest extends HibernateTest {
 
-
-	@Test
+	@Override
+    @Test
 	public void testSet() throws Exception {
 		Map<String, String> m = ImmutableMap.of("a", "1", "b", "2", "c", "3");
 		HstoreTypeEntity entity = new HstoreTypeEntity();
@@ -41,6 +42,16 @@ public class HstoreTypeTest extends HibernateTest {
 	}
 
 	@Test
+	@Sql
+	public void testGet() {
+        HstoreTypeEntity fromDb = em.find(HstoreTypeEntity.class, 37);
+        Map<String, String> map = fromDb.getMap();
+        assertThat(map.entrySet(), hasSize(1));
+        assertThat(map, hasEntry("name", "kp"));
+	}
+
+	@Override
+    @Test
 	public void testNull() throws Exception {
 		HstoreTypeEntity entity = new HstoreTypeEntity();
 
