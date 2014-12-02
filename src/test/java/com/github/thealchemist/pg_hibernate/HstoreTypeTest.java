@@ -3,10 +3,14 @@ package com.github.thealchemist.pg_hibernate;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -42,6 +46,30 @@ public class HstoreTypeTest extends HibernateTest {
 	}
 
 	@Test
+    @Sql
+    public void testSetWithNewMap() throws Exception {
+	    HstoreTypeEntity fromDb = em.find(HstoreTypeEntity.class, 37);
+        Map<String, String> map = fromDb.getMap();
+        map.remove("name");
+        map.put("power", "ball");
+        em.flush();
+
+        String newMapValue = this.jdbcTemplate.query("select map from HstoreTypeEntity where id = 37", new ResultSetExtractor<String>(){
+
+            @Override
+            public String extractData(ResultSet rs) throws SQLException, DataAccessException {
+                rs.next();
+                return rs.getString(1);
+            }});
+        assertNotNull(newMapValue);
+        /*
+         * postgres puts a space around the '=>' operator, which I wanna ignore
+         */
+        assertThat(newMapValue.replace(" => ", "=>"), is(equalTo("\"power\"=>\"ball\"")));
+	}
+
+	@Override
+    @Test
 	@Sql
 	public void testGet() {
         HstoreTypeEntity fromDb = em.find(HstoreTypeEntity.class, 37);
