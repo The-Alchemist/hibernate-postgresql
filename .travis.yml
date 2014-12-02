@@ -3,7 +3,7 @@ addons:
   postgresql: "9.3"
 before_install:
   - psql -c 'create database pg_hibernate;' -U postgres
-  - psql -U postgres -c 'create extension hstore'
-  - psql -U postgres -c 'GRANT ALL PRIVILEGES ON DATABASE pg_hibernate to postgres'
+  - psql -U pg_hibernate -c 'create extension hstore'
+  - psql -U pg_hibernate -c 'GRANT ALL PRIVILEGES ON DATABASE pg_hibernate to postgres'
 install:
   mvn verify
