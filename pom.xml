@@ -9,7 +9,7 @@
 
     <name>Hibernate type mapping for PostgreSQL types</name>
     <description>
-        A collection of Hibernate mappings I got from https://github.com/jamesward/spring_hibernate_hstore_demo and https://hibernate.atlassian.net/browse/HB-450
+        A collection of Hibernate type mappings for PostgreSQL-specific types such as hstore, circle, polygon, and more!
     </description>
     <url>https://github.com/The-Alchemist/hibernate-postgresql</url>
     <inceptionYear>2014</inceptionYear>
