@@ -4,7 +4,6 @@ addons:
 before_install:
   - psql -c 'create database pg_hibernate;' -U postgres
   - psql -U postgres -c 'create extension hstore'
-  - psql -U postgres -c 'CREATE USER postgres WITH PASSWORD \'\''
   - psql -U postgres -c 'GRANT ALL PRIVILEGES ON DATABASE pg_hibernate to postgres'
 install:
   mvn verify
