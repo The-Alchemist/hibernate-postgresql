@@ -1,8 +1,11 @@
 language: java
 addons:
-  postgresql: "9.2"
-before_script:
+  postgresql: "9.3"
+before_install:
   - psql -c 'create database pg_hibernate;' -U postgres
-  - psql -U postgres -c 'create extension hstore'
-install:
+  - psql -U postgres -c 'create extension hstore' pg_hibernate
+  - psql -U postgres -c 'GRANT ALL PRIVILEGES ON DATABASE pg_hibernate to postgres' pg_hibernate
+install: 
+  true
+script:
   mvn verify
