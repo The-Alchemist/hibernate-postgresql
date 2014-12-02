@@ -5,5 +5,7 @@ before_install:
   - psql -c 'create database pg_hibernate;' -U postgres
   - psql -U postgres -c 'create extension hstore' pg_hibernate
   - psql -U postgres -c 'GRANT ALL PRIVILEGES ON DATABASE pg_hibernate to postgres' pg_hibernate
-install:
+install: 
+  true
+script:
   mvn verify
