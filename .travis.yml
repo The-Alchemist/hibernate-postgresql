@@ -1,6 +1,6 @@
 language: java
 addons:
-  postgresql: "9.2"
+  postgresql: "9.3"
 before_script:
   - psql -c 'create database pg_hibernate;' -U postgres
   - psql -U postgres -c 'create extension hstore'
