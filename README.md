@@ -9,3 +9,32 @@ Sources include:
 * https://github.com/jamesward/spring_hibernate_hstore_demo
 * https://hibernate.atlassian.net/browse/HB-450
 * https://github.com/Canadensys/canadensys-data-access
+
+## How To Use
+
+```java
+@TypeDefs(value={
+    @TypeDef(name = "hstore", typeClass = com.github.thealchemist.pg_hibernate.HstoreType.class),
+    @TypeDef(name = "inet", typeClass = com.github.thealchemist.pg_hibernate.InetAddressType.class)
+})
+public class LoggedAction implements Serializable {
+  @Type(type = "hstore")
+  @Column(name="row_data", columnDefinition="hstore")
+  private Map<String, String> rowData;
+	
+  @Column(name="client_addr", columnDefinition="inet")
+  @Type(type="inet")
+  private InetAddress clientAddr;
+```
+
+## Full List of Supported Types
+* box
+* circle
+* hstore
+* inet
+* point
+* lineseg
+* polygon
+* string[]
+
+## Contributions Welcome!
