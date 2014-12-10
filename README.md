@@ -11,7 +11,7 @@ Sources include:
 * https://github.com/Canadensys/canadensys-data-access
 
 ## How To Use
-
+#### Java Source
 ```java
 @TypeDefs(value={
     @TypeDef(name = "hstore", typeClass = com.github.thealchemist.pg_hibernate.HstoreType.class),
@@ -25,6 +25,17 @@ public class LoggedAction implements Serializable {
   @Column(name="client_addr", columnDefinition="inet")
   @Type(type="inet")
   private InetAddress clientAddr;
+```
+
+#### Maven Configuration (pom.xml)
+
+```xml
+
+        <dependency>
+            <groupId>com.github.the-alchemist</groupId>
+            <artifactId>hibernate-postgresql</artifactId>
+            <version>1.0.6</version>
+        </dependency>
 ```
 
 ## Full List of Supported Types
