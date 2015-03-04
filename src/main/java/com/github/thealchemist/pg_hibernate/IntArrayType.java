@@ -3,7 +3,6 @@ package com.github.thealchemist.pg_hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.UserType;
-import org.postgresql.util.PGobject;
 
 import java.io.Serializable;
 import java.sql.Array;
@@ -61,20 +60,21 @@ public class IntArrayType implements UserType {
 		if (o == null) {
 			preparedStatement.setNull(i, java.sql.Types.ARRAY);
 		} else {
-			StringBuilder buffer = new StringBuilder();
-			for (int j = 0; j < myArray.length; j++) {
-				buffer.append(myArray[j]);
-				if (j < myArray.length - 1)
-					buffer.append(",");
-			}
-
-			PGobject object = new PGobject();
-			object.setValue("{" + buffer + "}");
-			preparedStatement.setObject(i, object);
+		    // use JDBC array type, which is fairly new, so tread carefully
+			Array inArray = preparedStatement.getConnection().createArrayOf("integer", wrap(myArray));
+			preparedStatement.setArray(i, inArray);
 		}
 	}
 
-	@Override
+	private static Object[] wrap(int[] intArray) {
+	    Integer[] result = new Integer[intArray.length];
+        for (int i = 0; i < intArray.length; i++) {
+            result[i] = Integer.valueOf(intArray[i]);
+        }
+        return result;
+    }
+
+    @Override
     public Object deepCopy( Object o ) throws HibernateException {
 		if (o == null) return null;
 		return ((int[]) o).clone();
