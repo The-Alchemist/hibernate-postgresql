@@ -18,9 +18,11 @@ import java.util.Arrays;
  */
 public class IntegerArrayType implements UserType {
 
-	@Override
+	private static final int[] JDBC_TYPES = new int[]{java.sql.Types.ARRAY};
+
+    @Override
     public int[] sqlTypes() {
-		return new int[]{java.sql.Types.ARRAY};
+		return JDBC_TYPES;
 	}
 
 	@Override
@@ -29,12 +31,16 @@ public class IntegerArrayType implements UserType {
 	}
 
 	@Override
-    public boolean equals( Object o, Object o1 ) throws HibernateException {
-		if (o == null && o1 == null)
+    public boolean equals( Object o1, Object o2 ) throws HibernateException {
+		if (o1 == null && o2 == null)
 			return true;
-		else if (o == null || o1 == null)
+		else if (o1 == null || o2 == null)
 			return false;
-		return Arrays.equals((Integer[]) o, (Integer[]) o1);
+		if(o1 instanceof int[] && o2 instanceof int[]) {
+		    return Arrays.equals(((int[]) o1), ((int[])o2));
+		} else {
+		    return Arrays.equals((Integer[]) o1, (Integer[]) o2);
+		}
 	}
 
     @Override
@@ -69,21 +75,12 @@ public class IntegerArrayType implements UserType {
 			int[] myArray = (int[]) o;
             Array inArray = preparedStatement.getConnection().createArrayOf("integer", wrap(myArray));
 			preparedStatement.setArray(i, inArray);
-		} else
-		{
-		    throw new IllegalArgumentException("Invalid typeof input: " + o.getClass().getName());
+		} else {
+		    throw new IllegalArgumentException("Invalid type of input: " + o.getClass().getName());
 		}
 	}
 
-	private static Object[] wrap(int[] intArray) {
-	    Integer[] result = new Integer[intArray.length];
-        for (int i = 0; i < intArray.length; i++) {
-            result[i] = Integer.valueOf(intArray[i]);
-        }
-        return result;
-    }
-
-    @Override
+	@Override
     public Object deepCopy( Object o ) throws HibernateException {
         if (o == null) return null;
         else if(o instanceof Integer[])
@@ -96,7 +93,7 @@ public class IntegerArrayType implements UserType {
             int[] array = (int[]) o;
             return array.clone();
         } else {
-            throw new IllegalArgumentException("Invalid type: " + o.getClass().getName());
+            throw new IllegalArgumentException("Invalid type to copy: " + o.getClass().getName());
         }
 	}
 
@@ -123,5 +120,13 @@ public class IntegerArrayType implements UserType {
     @Override
     public Object replace(Object original, Object target, Object owner) throws HibernateException {
         return original;
+    }
+
+    private static Object[] wrap(int[] intArray) {
+        Integer[] result = new Integer[intArray.length];
+        for (int i = 0; i < intArray.length; i++) {
+            result[i] = Integer.valueOf(intArray[i]);
+        }
+        return result;
     }
 }
