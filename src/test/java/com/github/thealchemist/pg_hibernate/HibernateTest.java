@@ -6,12 +6,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.jdbc.Sql;
@@ -37,9 +40,9 @@ import com.github.thealchemist.pg_hibernate.spring.PersistenceJPAConfig;
     SqlScriptsTestExecutionListener.class
     })
 @TransactionConfiguration(defaultRollback=true)
-@Ignore
 @Sql("classpath:/schema.sql")
 public abstract class HibernateTest  {
+    
     /*
      * created by Spring
      */

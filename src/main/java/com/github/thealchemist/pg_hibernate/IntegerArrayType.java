@@ -16,7 +16,7 @@ import java.util.Arrays;
  *
  * @see http://stackoverflow.com/a/26231403/423943
  */
-public class IntArrayType implements UserType {
+public class IntegerArrayType implements UserType {
 
 	@Override
     public int[] sqlTypes() {
@@ -24,8 +24,8 @@ public class IntArrayType implements UserType {
 	}
 
 	@Override
-    public Class<int[]> returnedClass() {
-		return int[].class;
+    public Class<Integer[]> returnedClass() {
+		return Integer[].class;
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class IntArrayType implements UserType {
 			return true;
 		else if (o == null || o1 == null)
 			return false;
-		return Arrays.equals((int[]) o, (int[]) o1);
+		return Arrays.equals((Integer[]) o, (Integer[]) o1);
 	}
 
     @Override
@@ -52,17 +52,26 @@ public class IntArrayType implements UserType {
 		}
 	}
 
+    /**
+     * Supports both int[] and Integer[], yay!
+     */
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
-
-		int[] myArray = (int[]) o;
-
-		if (o == null) {
+        // use JDBC array type, which is fairly new, so tread carefully
+        if (o == null) {
 			preparedStatement.setNull(i, java.sql.Types.ARRAY);
-		} else {
-		    // use JDBC array type, which is fairly new, so tread carefully
-			Array inArray = preparedStatement.getConnection().createArrayOf("integer", wrap(myArray));
+		} else if(o instanceof Integer[]){
+		    Integer[] myArray = (Integer[]) o;
+            Array inArray = preparedStatement.getConnection().createArrayOf("integer", myArray);
+            preparedStatement.setArray(i, inArray);
+		}
+		else if(o instanceof int[]) {
+			int[] myArray = (int[]) o;
+            Array inArray = preparedStatement.getConnection().createArrayOf("integer", wrap(myArray));
 			preparedStatement.setArray(i, inArray);
+		} else
+		{
+		    throw new IllegalArgumentException("Invalid typeof input: " + o.getClass().getName());
 		}
 	}
 
@@ -76,8 +85,19 @@ public class IntArrayType implements UserType {
 
     @Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
-		return ((int[]) o).clone();
+        if (o == null) return null;
+        else if(o instanceof Integer[])
+        {
+            Integer[] array = (Integer[]) o;
+            return array.clone();
+        }
+        else if(o instanceof int[])
+        {
+            int[] array = (int[]) o;
+            return array.clone();
+        } else {
+            throw new IllegalArgumentException("Invalid type: " + o.getClass().getName());
+        }
 	}
 
 	@Override

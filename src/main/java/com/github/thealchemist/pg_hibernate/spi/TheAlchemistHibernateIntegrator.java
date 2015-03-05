@@ -11,7 +11,7 @@ import com.github.thealchemist.pg_hibernate.BoxType;
 import com.github.thealchemist.pg_hibernate.CircleType;
 import com.github.thealchemist.pg_hibernate.HstoreType;
 import com.github.thealchemist.pg_hibernate.InetAddressType;
-import com.github.thealchemist.pg_hibernate.IntArrayType;
+import com.github.thealchemist.pg_hibernate.IntegerArrayType;
 import com.github.thealchemist.pg_hibernate.LineSegmentType;
 import com.github.thealchemist.pg_hibernate.PointType;
 import com.github.thealchemist.pg_hibernate.PolygonType;
@@ -30,7 +30,7 @@ public class TheAlchemistHibernateIntegrator implements Integrator {
         registerClass(configuration, new CircleType());
         registerClass(configuration, new HstoreType());
         registerClass(configuration, new InetAddressType());
-        registerClass(configuration, new IntArrayType());
+        registerClass(configuration, new IntegerArrayType());
         registerClass(configuration, new LineSegmentType());
         registerClass(configuration, new PointType());
         registerClass(configuration, new PolygonType());
