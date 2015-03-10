@@ -34,7 +34,7 @@ public class LoggedAction implements Serializable {
         <dependency>
             <groupId>com.github.the-alchemist</groupId>
             <artifactId>hibernate-postgresql</artifactId>
-            <version>1.0.9</version>
+            <version>1.0.12</version>
         </dependency>
 ```
 
