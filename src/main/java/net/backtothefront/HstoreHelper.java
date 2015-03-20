@@ -1,8 +1,6 @@
 package net.backtothefront;
 
 
-import org.springframework.util.StringUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +27,7 @@ public class HstoreHelper {
 
     public static Map<String, String> toMap(String s) {
         Map<String, String> m = new HashMap<String, String>();
-        if (! StringUtils.hasText(s)) {
+        if (s == null || s.trim().isEmpty()) {
             return m;
         }
         String[] tokens = s.split(", ");
