@@ -8,7 +8,8 @@
     @TypeDef(name = "polygon", typeClass = com.github.thealchemist.pg_hibernate.PolygonType.class),
     @TypeDef(name = "stringarray", typeClass = com.github.thealchemist.pg_hibernate.StringArrayType.class),
     @TypeDef(name = "inet", typeClass = com.github.thealchemist.pg_hibernate.InetAddressType.class),
-    @TypeDef(name = "intarray", typeClass = com.github.thealchemist.pg_hibernate.IntegerArrayType.class)
+    @TypeDef(name = "intarray", typeClass = com.github.thealchemist.pg_hibernate.IntegerArrayType.class),
+    @TypeDef(name = "xml", typeClass = com.github.thealchemist.pg_hibernate.XMLType.class)
 })
 
 package com.github.thealchemist.pg_hibernate.spring;

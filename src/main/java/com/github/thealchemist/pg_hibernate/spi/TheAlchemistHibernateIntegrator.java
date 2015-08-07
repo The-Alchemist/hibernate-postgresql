@@ -35,6 +35,10 @@ public class TheAlchemistHibernateIntegrator implements Integrator {
         registerClass(configuration, new PointType());
         registerClass(configuration, new PolygonType());
         registerClass(configuration, new StringArrayType());
+        /*
+         * I'm not gonna auto-register the xml type because it overwrites String and I'm not sure how that works yet
+         */
+        // registerClass(configuration, new XMLType());
     }
 
     private void registerClass(Configuration configuration, UserType type) {
