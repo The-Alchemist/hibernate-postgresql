@@ -34,7 +34,7 @@ public class LoggedAction implements Serializable {
         <dependency>
             <groupId>com.github.the-alchemist</groupId>
             <artifactId>hibernate-postgresql</artifactId>
-            <version>1.0.13</version>
+            <version>1.0.14</version>
         </dependency>
 ```
 
@@ -48,5 +48,6 @@ public class LoggedAction implements Serializable {
 * polygon
 * string[]
 * intarray
+* xml
 
 ## Contributions Welcome!
