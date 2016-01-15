@@ -34,9 +34,11 @@ public class LoggedAction implements Serializable {
         <dependency>
             <groupId>com.github.the-alchemist</groupId>
             <artifactId>hibernate-postgresql</artifactId>
-            <version>1.0.14</version>
+            <version>1.0.16</version>
         </dependency>
 ```
+#### Hibernate 5 Support
+Hibernate 5 is supported starting with version 1.0.16
 
 ## Full List of Supported Types
 * box
