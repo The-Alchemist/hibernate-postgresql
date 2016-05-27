@@ -34,7 +34,7 @@ public class LoggedAction implements Serializable {
         <dependency>
             <groupId>com.github.the-alchemist</groupId>
             <artifactId>hibernate-postgresql</artifactId>
-            <version>1.0.16</version>
+            <version>1.0.18</version>
         </dependency>
 ```
 #### Hibernate 5 Support
