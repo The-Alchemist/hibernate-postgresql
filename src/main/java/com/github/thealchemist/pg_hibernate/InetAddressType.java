@@ -64,6 +64,7 @@ public class InetAddressType implements UserType {
 		} else {
 			PGobject object = new PGobject();
 			object.setValue(((InetAddress) o).getHostAddress());
+			object.setType("inet");
 			preparedStatement.setObject(i, object);
 		}
 	}
