@@ -64,6 +64,11 @@ public class InetAddressType implements UserType {
 		} else {
 			PGobject object = new PGobject();
 			object.setValue(((InetAddress) o).getHostAddress());
+            /**
+             * Adding this line fixes the NullPointerException but replaces it with
+             * org.postgresql.util.PSQLException: ERROR: relation "inetaddressentity" does not exist
+             */
+            // object.setType("inet");
 			preparedStatement.setObject(i, object);
 		}
 	}
