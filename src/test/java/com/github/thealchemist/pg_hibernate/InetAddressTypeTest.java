@@ -28,6 +28,7 @@ public class InetAddressTypeTest extends HibernateTest {
 		entity.setAddress(address);
 
 		this.em.persist(entity);
+		this.em.flush();
 
 		assertNotNull(entity.getId());
 		assertTrue(entity.getId().intValue() > 0);
