@@ -57,15 +57,15 @@ public class HstoreType implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, SharedSessionContractImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
-        String col = strings[0];
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
+        String col = names[0];
         String val = resultSet.getString(col);
         return HstoreHelper.toMap(val);
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
-        String s = HstoreHelper.toString((Map) o);
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+        String s = HstoreHelper.toString((Map) value);
         preparedStatement.setObject(i, s, Types.OTHER);
     }
 

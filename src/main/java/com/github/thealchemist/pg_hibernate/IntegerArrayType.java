@@ -44,12 +44,12 @@ public class IntegerArrayType implements UserType {
 	}
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, SharedSessionContractImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
 
-		if (strings.length != 1)
-			throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
+		if (names.length != 1)
+			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-		Array value = resultSet.getArray(strings[0]);
+		Array value = resultSet.getArray(names[0]);
 
 		if (value == null) {
 			return null;
@@ -62,21 +62,21 @@ public class IntegerArrayType implements UserType {
      * Supports both int[] and Integer[], yay!
      */
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
         // use JDBC array type, which is fairly new, so tread carefully
-        if (o == null) {
+        if (value == null) {
 			preparedStatement.setNull(i, java.sql.Types.ARRAY);
-		} else if(o instanceof Integer[]){
-		    Integer[] myArray = (Integer[]) o;
+		} else if(value instanceof Integer[]){
+		    Integer[] myArray = (Integer[]) value;
             Array inArray = preparedStatement.getConnection().createArrayOf("integer", myArray);
             preparedStatement.setArray(i, inArray);
 		}
-		else if(o instanceof int[]) {
-			int[] myArray = (int[]) o;
+		else if(value instanceof int[]) {
+			int[] myArray = (int[]) value;
             Array inArray = preparedStatement.getConnection().createArrayOf("integer", wrap(myArray));
 			preparedStatement.setArray(i, inArray);
 		} else {
-		    throw new IllegalArgumentException("Invalid type of input: " + o.getClass().getName());
+		    throw new IllegalArgumentException("Invalid type of input: " + value.getClass().getName());
 		}
 	}
 

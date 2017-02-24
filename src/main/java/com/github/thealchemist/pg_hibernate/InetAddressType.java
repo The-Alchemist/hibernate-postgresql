@@ -41,12 +41,12 @@ public class InetAddressType implements UserType {
 	}
 
 	 @Override
-	 public Object nullSafeGet(ResultSet resultSet, String[] strings, SharedSessionContractImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
+	 public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
 
-		if (strings.length != 1)
-			throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
+		if (names.length != 1)
+			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-		String value = resultSet.getString(strings[0]);
+		String value = resultSet.getString(names[0]);
 
 		if (value == null) {
 			return null;
@@ -56,13 +56,13 @@ public class InetAddressType implements UserType {
 	}
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
 
-		if (o == null) {
+		if (value == null) {
 			preparedStatement.setNull(i, java.sql.Types.OTHER);
 		} else {
 			PGobject object = new PGobject();
-			object.setValue(((InetAddress) o).getHostAddress());
+			object.setValue(((InetAddress) value).getHostAddress());
 			object.setType("inet");
 			preparedStatement.setObject(i, object);
 		}

@@ -41,12 +41,12 @@ public class LineSegmentType implements UserType {
 	}
 
 	 @Override
-	 public Object nullSafeGet(ResultSet resultSet, String[] strings, SharedSessionContractImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
+	 public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
 
-		if (strings.length != 1)
-			throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
+		if (names.length != 1)
+			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-		PGlseg value = (PGlseg) resultSet.getObject(strings[0]);
+		PGlseg value = (PGlseg) resultSet.getObject(names[0]);
 
 		if (value == null) {
 			return null;
@@ -58,11 +58,11 @@ public class LineSegmentType implements UserType {
 	}
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
 
-		LineSegment line = (LineSegment) o;
+		LineSegment line = (LineSegment) value;
 
-		if (o == null) {
+		if (value == null) {
 			preparedStatement.setNull(i, java.sql.Types.OTHER);
 		} else {
 			preparedStatement.setObject(i, new PGlseg(line.getP1().getX(), line.getP1().getY(),

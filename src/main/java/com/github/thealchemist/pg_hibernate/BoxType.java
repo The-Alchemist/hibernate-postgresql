@@ -41,12 +41,12 @@ public class BoxType implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, SharedSessionContractImplementor sessionImplementor, Object o)
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner)
             throws HibernateException, SQLException {
-        if (strings.length != 1)
-            throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
+        if (names.length != 1)
+            throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-        PGbox value = (PGbox) resultSet.getObject(strings[0]);
+        PGbox value = (PGbox) resultSet.getObject(names[0]);
 
         if (value == null) {
             return null;
@@ -58,11 +58,11 @@ public class BoxType implements UserType {
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
 
-        Box rect = (Box) o;
+        Box rect = (Box) value;
 
-        if (o == null) {
+        if (value == null) {
             preparedStatement.setNull(i, java.sql.Types.OTHER);
         } else {
             preparedStatement.setObject(i, new PGbox(rect.getP1().getX(), rect.getP1().getY(), rect.getP2().getX(),
