@@ -41,7 +41,6 @@ public class StringArrayType implements UserType {
 
     @Override
     public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
-
 		if (names.length != 1)
 			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
@@ -64,7 +63,6 @@ public class StringArrayType implements UserType {
 
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
-
 		String[] strings = (String[]) value;
 
 		if (value == null) {
@@ -85,7 +83,9 @@ public class StringArrayType implements UserType {
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
+		if (o == null)
+		    return null;
+		
 		return ((String[]) o).clone();
 	}
 

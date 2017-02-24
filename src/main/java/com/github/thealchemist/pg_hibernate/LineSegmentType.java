@@ -42,7 +42,6 @@ public class LineSegmentType implements UserType {
 
 	 @Override
 	 public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
-
 		if (names.length != 1)
 			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
@@ -59,7 +58,6 @@ public class LineSegmentType implements UserType {
 
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
-
 		LineSegment line = (LineSegment) value;
 
 		if (value == null) {
@@ -72,11 +70,12 @@ public class LineSegmentType implements UserType {
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
+		if (o == null)
+		    return null;
+		
 		try {
 			return ((LineSegment) o).clone();
-		}
-		catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e) {
 			throw new IllegalArgumentException(e.toString());
 		}
 	}

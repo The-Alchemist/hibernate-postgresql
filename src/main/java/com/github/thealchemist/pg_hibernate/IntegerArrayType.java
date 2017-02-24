@@ -70,8 +70,7 @@ public class IntegerArrayType implements UserType {
 		    Integer[] myArray = (Integer[]) value;
             Array inArray = preparedStatement.getConnection().createArrayOf("integer", myArray);
             preparedStatement.setArray(i, inArray);
-		}
-		else if(value instanceof int[]) {
+		} else if(value instanceof int[]) {
 			int[] myArray = (int[]) value;
             Array inArray = preparedStatement.getConnection().createArrayOf("integer", wrap(myArray));
 			preparedStatement.setArray(i, inArray);
@@ -82,14 +81,12 @@ public class IntegerArrayType implements UserType {
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-        if (o == null) return null;
-        else if(o instanceof Integer[])
-        {
+        if (o == null) {
+            return null;
+        } else if(o instanceof Integer[]) {
             Integer[] array = (Integer[]) o;
             return array.clone();
-        }
-        else if(o instanceof int[])
-        {
+        } else if(o instanceof int[]) {
             int[] array = (int[]) o;
             return array.clone();
         } else {

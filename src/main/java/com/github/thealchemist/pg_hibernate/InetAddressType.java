@@ -42,7 +42,6 @@ public class InetAddressType implements UserType {
 
 	 @Override
 	 public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
-
 		if (names.length != 1)
 			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
@@ -57,7 +56,6 @@ public class InetAddressType implements UserType {
 
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
-
 		if (value == null) {
 			preparedStatement.setNull(i, java.sql.Types.OTHER);
 		} else {
@@ -70,11 +68,12 @@ public class InetAddressType implements UserType {
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
+		if (o == null)
+		    return null;
+		
 		try {
 			return InetAddress.getByAddress(((InetAddress) o).getAddress());
-		}
-		catch (UnknownHostException e) {
+		} catch (UnknownHostException e) {
 			throw new AssertionError("this can't happen!");
 		}
 	}

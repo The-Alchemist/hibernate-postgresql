@@ -59,14 +59,13 @@ public class BoxType implements UserType {
 
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
-
         Box rect = (Box) value;
 
         if (value == null) {
             preparedStatement.setNull(i, java.sql.Types.OTHER);
         } else {
-            preparedStatement.setObject(i, new PGbox(rect.getP1().getX(), rect.getP1().getY(), rect.getP2().getX(),
-                    rect.getP2().getY()));
+            preparedStatement.setObject(i, new PGbox(rect.getP1().getX(), rect.getP1().getY(),
+                    rect.getP2().getX(), rect.getP2().getY()));
         }
     }
 
@@ -74,6 +73,7 @@ public class BoxType implements UserType {
     public Object deepCopy(Object o) throws HibernateException {
         if (o == null)
             return null;
+        
         try {
             return ((Box) o).clone();
         } catch (CloneNotSupportedException e) {

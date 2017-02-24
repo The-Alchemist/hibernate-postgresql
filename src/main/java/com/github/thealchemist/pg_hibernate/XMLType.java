@@ -64,6 +64,7 @@ public class XMLType implements UserType {
     public Object deepCopy(Object value) throws HibernateException {
         if (value == null)
             return null;
+        
         return new String( (String)value );
     }
 

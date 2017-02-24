@@ -75,7 +75,6 @@ public class PolygonType implements UserType {
 
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
-
 		Polygon polygon = (Polygon) value;
 
 		if (value == null) {
@@ -87,11 +86,12 @@ public class PolygonType implements UserType {
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
+		if (o == null)
+		    return null;
+		
 		try {
 			return ((Polygon) o).clone();
-		}
-		catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e) {
 			throw new IllegalArgumentException(e.toString());
 		}
 	}

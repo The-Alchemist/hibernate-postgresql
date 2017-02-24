@@ -73,7 +73,6 @@ public class CircleType implements UserType {
 
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
-
         Circle c = (Circle) value;
 
         if (value == null) {
@@ -87,6 +86,7 @@ public class CircleType implements UserType {
     public Object deepCopy(Object o) throws HibernateException {
         if (o == null)
             return null;
+        
         try {
             return ((Circle) o).clone();
         } catch (CloneNotSupportedException e) {
