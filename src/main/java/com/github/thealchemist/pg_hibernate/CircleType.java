@@ -1,17 +1,17 @@
 package com.github.thealchemist.pg_hibernate;
 
+import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.postgresql.geometric.PGcircle;
 
 import com.github.thealchemist.pg_hibernate.types.Circle;
 import com.github.thealchemist.pg_hibernate.types.Point;
-
-import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * A Hibernate <b>UserType</b> for PostgreSQL's <b>circle</b> type. <br>
@@ -44,7 +44,7 @@ public class CircleType implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, SessionImplementor sessionImplementor, Object o)
+    public Object nullSafeGet(ResultSet resultSet, String[] strings, SharedSessionContractImplementor sessionImplementor, Object o)
             throws HibernateException, SQLException {
         if (strings.length != 1)
             throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
@@ -72,7 +72,7 @@ public class CircleType implements UserType {
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
 
         Circle c = (Circle) o;
 

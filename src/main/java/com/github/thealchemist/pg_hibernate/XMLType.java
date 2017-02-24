@@ -1,18 +1,14 @@
 package com.github.thealchemist.pg_hibernate;
 
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.usertype.UserType;
-import org.postgresql.geometric.PGbox;
-
-import com.github.thealchemist.pg_hibernate.types.Point;
-import com.github.thealchemist.pg_hibernate.types.Box;
-
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.usertype.UserType;
 
 /**
  * A Hibernate <b>UserType</b> for PostgreSQL's <b>xml</b> type.
@@ -49,14 +45,14 @@ public class XMLType implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
         assert(names.length == 1);
         String xmldoc = rs.getString( names[0] );
         return rs.wasNull() ? null : xmldoc;
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException  {
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException  {
         if (value == null) {
             st.setNull(index, Types.OTHER);
         } else {
