@@ -1,16 +1,16 @@
 package com.github.thealchemist.pg_hibernate;
 
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.usertype.UserType;
-import org.postgresql.util.PGobject;
-
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.StringTokenizer;
+
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.usertype.UserType;
+import org.postgresql.util.PGobject;
 
 /**
  * A Hibernate <b>UserType</b> for PostgreSQL's native <b>varchar[]</b> type.
@@ -40,12 +40,11 @@ public class StringArrayType implements UserType {
 	}
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, SessionImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
+		if (names.length != 1)
+			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-		if (strings.length != 1)
-			throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
-
-		String value = resultSet.getString(strings[0]);
+		String value = resultSet.getString(names[0]);
 
 		if (value == null) {
 			return null;
@@ -63,11 +62,10 @@ public class StringArrayType implements UserType {
 	}
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+		String[] strings = (String[]) value;
 
-		String[] strings = (String[]) o;
-
-		if (o == null) {
+		if (value == null) {
 			preparedStatement.setNull(i, java.sql.Types.OTHER);
 		} else {
 			StringBuffer buffer = new StringBuffer();
@@ -85,7 +83,9 @@ public class StringArrayType implements UserType {
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
+		if (o == null)
+		    return null;
+		
 		return ((String[]) o).clone();
 	}
 

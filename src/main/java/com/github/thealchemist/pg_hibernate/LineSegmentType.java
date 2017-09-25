@@ -1,17 +1,17 @@
 package com.github.thealchemist.pg_hibernate;
 
+import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.postgresql.geometric.PGlseg;
 
 import com.github.thealchemist.pg_hibernate.types.LineSegment;
 import com.github.thealchemist.pg_hibernate.types.Point;
-
-import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * A Hibernate <b>UserType</b> for PostgreSQL's <b>lseg</b> type.
@@ -41,12 +41,11 @@ public class LineSegmentType implements UserType {
 	}
 
 	 @Override
-	 public Object nullSafeGet(ResultSet resultSet, String[] strings, SessionImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
+	 public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
+		if (names.length != 1)
+			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-		if (strings.length != 1)
-			throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
-
-		PGlseg value = (PGlseg) resultSet.getObject(strings[0]);
+		PGlseg value = (PGlseg) resultSet.getObject(names[0]);
 
 		if (value == null) {
 			return null;
@@ -58,11 +57,10 @@ public class LineSegmentType implements UserType {
 	}
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+		LineSegment line = (LineSegment) value;
 
-		LineSegment line = (LineSegment) o;
-
-		if (o == null) {
+		if (value == null) {
 			preparedStatement.setNull(i, java.sql.Types.OTHER);
 		} else {
 			preparedStatement.setObject(i, new PGlseg(line.getP1().getX(), line.getP1().getY(),
@@ -72,11 +70,12 @@ public class LineSegmentType implements UserType {
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
+		if (o == null)
+		    return null;
+		
 		try {
 			return ((LineSegment) o).clone();
-		}
-		catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e) {
 			throw new IllegalArgumentException(e.toString());
 		}
 	}

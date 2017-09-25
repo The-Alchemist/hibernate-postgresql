@@ -1,16 +1,16 @@
 package com.github.thealchemist.pg_hibernate;
 
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.usertype.UserType;
-import org.postgresql.geometric.PGpoint;
-
-import com.github.thealchemist.pg_hibernate.types.Point;
-
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.usertype.UserType;
+import org.postgresql.geometric.PGpoint;
+
+import com.github.thealchemist.pg_hibernate.types.Point;
 
 /**
  * A Hibernate <b>UserType</b> for PostgreSQL's <b>point</b> type.
@@ -40,12 +40,11 @@ public class PointType implements UserType {
 	}
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, SessionImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
+		if (names.length != 1)
+			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-		if (strings.length != 1)
-			throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
-
-		PGpoint value = (PGpoint) resultSet.getObject(strings[0]);
+		PGpoint value = (PGpoint) resultSet.getObject(names[0]);
 
 		if (value == null) {
 			return null;
@@ -55,22 +54,22 @@ public class PointType implements UserType {
 	}
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
-
-		if (o == null) {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+		if (value == null) {
 			preparedStatement.setNull(i, java.sql.Types.OTHER);
 		} else {
-			preparedStatement.setObject(i, new PGpoint(((Point) o).getX(), ((Point) o).getY()));
+			preparedStatement.setObject(i, new PGpoint(((Point) value).getX(), ((Point) value).getY()));
 		}
 	}
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
+		if (o == null)
+		    return null;
+		
 		try {
 			return ((Point) o).clone();
-		}
-		catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}

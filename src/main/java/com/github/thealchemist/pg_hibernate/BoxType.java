@@ -1,17 +1,17 @@
 package com.github.thealchemist.pg_hibernate;
 
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.usertype.UserType;
-import org.postgresql.geometric.PGbox;
-
-import com.github.thealchemist.pg_hibernate.types.Point;
-import com.github.thealchemist.pg_hibernate.types.Box;
-
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.usertype.UserType;
+import org.postgresql.geometric.PGbox;
+
+import com.github.thealchemist.pg_hibernate.types.Box;
+import com.github.thealchemist.pg_hibernate.types.Point;
 
 /**
  * A Hibernate <b>UserType</b> for PostgreSQL's <b>box</b> type.
@@ -41,12 +41,12 @@ public class BoxType implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, SessionImplementor sessionImplementor, Object o)
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner)
             throws HibernateException, SQLException {
-        if (strings.length != 1)
-            throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
+        if (names.length != 1)
+            throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-        PGbox value = (PGbox) resultSet.getObject(strings[0]);
+        PGbox value = (PGbox) resultSet.getObject(names[0]);
 
         if (value == null) {
             return null;
@@ -58,15 +58,14 @@ public class BoxType implements UserType {
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+        Box rect = (Box) value;
 
-        Box rect = (Box) o;
-
-        if (o == null) {
+        if (value == null) {
             preparedStatement.setNull(i, java.sql.Types.OTHER);
         } else {
-            preparedStatement.setObject(i, new PGbox(rect.getP1().getX(), rect.getP1().getY(), rect.getP2().getX(),
-                    rect.getP2().getY()));
+            preparedStatement.setObject(i, new PGbox(rect.getP1().getX(), rect.getP1().getY(),
+                    rect.getP2().getX(), rect.getP2().getY()));
         }
     }
 
@@ -74,6 +73,7 @@ public class BoxType implements UserType {
     public Object deepCopy(Object o) throws HibernateException {
         if (o == null)
             return null;
+        
         try {
             return ((Box) o).clone();
         } catch (CloneNotSupportedException e) {

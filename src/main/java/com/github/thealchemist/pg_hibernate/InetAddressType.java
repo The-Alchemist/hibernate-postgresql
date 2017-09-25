@@ -1,19 +1,18 @@
 package com.github.thealchemist.pg_hibernate;
 
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.usertype.UserType;
-import org.postgresql.util.PGobject;
-
-import com.google.common.net.InetAddresses;
-
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.StringTokenizer;
+
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.usertype.UserType;
+import org.postgresql.util.PGobject;
+
+import com.google.common.net.InetAddresses;
 
 /**
  * A Hibernate <b>UserType</b> for PostgreSQL's <b>inet</b> type.
@@ -42,12 +41,11 @@ public class InetAddressType implements UserType {
 	}
 
 	 @Override
-	 public Object nullSafeGet(ResultSet resultSet, String[] strings, SessionImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
+	 public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
+		if (names.length != 1)
+			throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-		if (strings.length != 1)
-			throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
-
-		String value = resultSet.getString(strings[0]);
+		String value = resultSet.getString(names[0]);
 
 		if (value == null) {
 			return null;
@@ -57,13 +55,12 @@ public class InetAddressType implements UserType {
 	}
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
-
-		if (o == null) {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+		if (value == null) {
 			preparedStatement.setNull(i, java.sql.Types.OTHER);
 		} else {
 			PGobject object = new PGobject();
-			object.setValue(((InetAddress) o).getHostAddress());
+			object.setValue(((InetAddress) value).getHostAddress());
 			object.setType("inet");
 			preparedStatement.setObject(i, object);
 		}
@@ -71,11 +68,12 @@ public class InetAddressType implements UserType {
 
 	@Override
     public Object deepCopy( Object o ) throws HibernateException {
-		if (o == null) return null;
+		if (o == null)
+		    return null;
+		
 		try {
 			return InetAddress.getByAddress(((InetAddress) o).getAddress());
-		}
-		catch (UnknownHostException e) {
+		} catch (UnknownHostException e) {
 			throw new AssertionError("this can't happen!");
 		}
 	}

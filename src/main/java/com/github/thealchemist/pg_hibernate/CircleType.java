@@ -1,17 +1,17 @@
 package com.github.thealchemist.pg_hibernate;
 
+import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.postgresql.geometric.PGcircle;
 
 import com.github.thealchemist.pg_hibernate.types.Circle;
 import com.github.thealchemist.pg_hibernate.types.Point;
-
-import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * A Hibernate <b>UserType</b> for PostgreSQL's <b>circle</b> type. <br>
@@ -44,12 +44,12 @@ public class CircleType implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, SessionImplementor sessionImplementor, Object o)
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner)
             throws HibernateException, SQLException {
-        if (strings.length != 1)
-            throw new IllegalArgumentException("strings.length != 1, strings = " + strings);
+        if (names.length != 1)
+            throw new IllegalArgumentException("names.length != 1, names = " + names);
 
-        PGcircle value = (PGcircle) resultSet.getObject(strings[0]);
+        PGcircle value = (PGcircle) resultSet.getObject(names[0]);
 
         if (value == null) {
             return null;
@@ -72,11 +72,10 @@ public class CircleType implements UserType {
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int i, SharedSessionContractImplementor sessionImplementor) throws HibernateException, SQLException {
+        Circle c = (Circle) value;
 
-        Circle c = (Circle) o;
-
-        if (o == null) {
+        if (value == null) {
             preparedStatement.setNull(i, java.sql.Types.OTHER);
         } else {
             preparedStatement.setObject(i, new PGcircle(c.getCenter().getX(), c.getCenter().getY(), c.getRadius()));
@@ -87,6 +86,7 @@ public class CircleType implements UserType {
     public Object deepCopy(Object o) throws HibernateException {
         if (o == null)
             return null;
+        
         try {
             return ((Circle) o).clone();
         } catch (CloneNotSupportedException e) {
