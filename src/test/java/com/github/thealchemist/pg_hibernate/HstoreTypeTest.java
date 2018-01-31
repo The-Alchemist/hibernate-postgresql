@@ -74,8 +74,9 @@ public class HstoreTypeTest extends HibernateTest {
 	public void testGet() {
         HstoreTypeEntity fromDb = em.find(HstoreTypeEntity.class, 37);
         Map<String, String> map = fromDb.getMap();
-        assertThat(map.entrySet(), hasSize(1));
+        assertThat(map.entrySet(), hasSize(2));
         assertThat(map, hasEntry("name", "kp"));
+        assertThat(map, hasEntry("fruits", "apple,pear, lemon"));
 	}
 
 	@Override
