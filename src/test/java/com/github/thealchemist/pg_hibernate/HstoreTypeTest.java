@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.dao.DataAccessException;
@@ -78,6 +79,15 @@ public class HstoreTypeTest extends HibernateTest {
         assertThat(map, hasEntry("name", "kp"));
         assertThat(map, hasEntry("fruits", "apple,pear, lemon"));
 	}
+
+    @Test
+    @Sql
+    public void testGetWithMapWithEmptyStringKeyValue() {
+        HstoreTypeEntity fromDb = em.find(HstoreTypeEntity.class, 37);
+        Map<String,String> map = fromDb.getMap();
+        assertThat(map.entrySet(),hasSize(1));
+        assertThat(map,hasEntry("",""));
+    }
 
 	@Override
     @Test

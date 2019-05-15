@@ -63,5 +63,4 @@ public abstract class HibernateTest  {
     public abstract void testSet() throws Exception;
     public abstract void testNull() throws Exception;
     public abstract void testGet() throws Exception;
-
 }
