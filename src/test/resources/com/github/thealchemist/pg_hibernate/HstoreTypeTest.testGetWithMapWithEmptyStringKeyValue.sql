@@ -4,4 +4,4 @@ CREATE TABLE HstoreTypeEntity (
     primary key (id)
 );
 
-insert into HstoreTypeEntity (id, map) VALUES (37, '"" => ""')
+insert into HstoreTypeEntity (id, map) VALUES (37, '')
