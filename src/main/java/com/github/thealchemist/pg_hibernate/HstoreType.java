@@ -60,7 +60,7 @@ public class HstoreType implements UserType {
     public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor sessionImplementor, Object owner) throws HibernateException, SQLException {
         String col = names[0];
         String val = resultSet.getString(col);
-        return HStoreConverter.fromString(val);
+        return val == null ? HStoreConverter.fromString("") : HStoreConverter.fromString(val);
     }
 
     @Override
