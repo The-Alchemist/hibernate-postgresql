@@ -1,4 +1,6 @@
 language: java
+jdk:
+  - openjdk8
 addons:
   postgresql: "9.3"
 before_install:
