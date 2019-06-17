@@ -92,4 +92,12 @@ public class HstoreTypeTest extends HibernateTest {
 		assertNull(fromDb.getMap());
 
 	}
+
+	@Test
+	@Sql
+	public void testGetWithNullInMap() {
+		HstoreTypeEntity fromDb = em.find(HstoreTypeEntity.class, 37);
+		Map<String,String> map = fromDb.getMap();
+		assertNotNull(map);
+	}
 }

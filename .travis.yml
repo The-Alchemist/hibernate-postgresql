@@ -1,6 +1,8 @@
 language: java
+jdk:
+  - openjdk8
 addons:
-  postgresql: "9.3"
+  postgresql: "9.4"
 before_install:
   - psql -c 'create database pg_hibernate;' -U postgres
   - psql -U postgres -c 'create extension hstore' pg_hibernate
