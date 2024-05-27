@@ -10,6 +10,10 @@ Sources include:
 * https://hibernate.atlassian.net/browse/HB-450
 * https://github.com/Canadensys/canadensys-data-access
 
+## Deprecation Notice
+
+This project has been superceded by other projects such as https://github.com/vladmihalcea/hypersistence-utils.
+
 ## How To Use
 #### Java Source
 ```java
